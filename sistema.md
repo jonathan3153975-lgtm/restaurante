@@ -1,7 +1,7 @@
 # 🍽️ Sistema Completo de Gestão para Restaurante (SaaS)
 
 ## 📌 Visão Geral
-Sistema completo para gestão de restaurantes em modelo **SaaS multi-tenant**, contemplando administração, contabilidade, estoque, cardápio digital com pedidos via QR-Code, controle de mesas, caixa, funcionários e integração fiscal e de pagamentos.
+Sistema completo para gestão de restaurantes em modelo **SaaS multi-tenant**, contemplando administração, contabilidade, estoque, cardápio digital com pedidos via QR-Code, pagamento da conta pelo acesso do cliente com confirmação no caixa, controle de mesas, caixa, funcionários e integração fiscal e de pagamentos.
 
 O objetivo é fornecer uma solução **robusta, escalável, segura e moderna**, com resposta em tempo real entre pedidos do cliente na mesa e o painel operacional do restaurante.
 
@@ -49,12 +49,33 @@ O objetivo é fornecer uma solução **robusta, escalável, segura e moderna**, 
   - Gerente
   - Caixa
   - Cozinha
+  - Copa
 - Permissões granulares por módulo
 - Recuperação de senha
 
 ---
 
 ## 🧾 Módulo Administrativo
+O menu lateral com submenus, na seguinte estrutura:
+  Menu Administrativo;
+  Submenu:
+    - Cadastro de fornecedores;
+    - NF entrada (Lançamento manual e importação xml);
+
+      -> Esse módulo deve ter: 
+        1 - Painel com campo de busca dinâmico (digitar e filtrar), além de filtros por mês e ano e listar as notas registradas (inclua paginação nos registros) Com opção para visualizar (em modal ou modo documento em outra aba para impressão), editar e excluir.
+
+        2 - No cadastro com campos específicos para o fim, incluíndo impostos. O ideal é que caso seja nota fiscal de produtos referentes ao estoque, já inclua o saldo no estoque automaticamente. Inclua as máscaras referentes aos campos, como cnpj, por exemplo. Para buscar o fornecedor, utilize um campo digitável que retorne o registro do fornecedor. Nos campos referentes a valores, utilize uma formatação que insira a vírgula duas casas após, automaticamente.
+
+        3 - O formulário de cadastro também deve ter um atalho para cadastrar fornecedor, de maneira rápida, para que o usuário não saia da tela de lançamento de notas.
+        
+        4 - 
+
+    - Estoque;
+  Menu RH;
+  Submenu:
+    - Funcionários;
+    - Holerites;
 
 ### 📥 Notas Fiscais de Entrada
 - Lançamento manual e importação XML
