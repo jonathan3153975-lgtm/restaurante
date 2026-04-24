@@ -4,36 +4,27 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use RuntimeException;
-
 final class View
 {
-    public static function render(string $template, array $data = [], string $layout = 'layouts/app'): void
+    public static function render(string $template, array $data = [], string $layout = 'app'): void
     {
-        $templatePath = App::basePath('views/' . $template . '.php');
+        $viewFile = BASE_PATH . '/views/' . $template . '.php';
+        $layoutFile = BASE_PATH . '/views/layouts/' . $layout . '.php';
 
-        if (!is_file($templatePath)) {
-            throw new RuntimeException(sprintf('View %s não encontrada.', $template));
+        if (!is_file($viewFile)) {
+            throw new \RuntimeException(sprintf('View "%s" not found.', $template));
+        }
+
+        if (!is_file($layoutFile)) {
+            throw new \RuntimeException(sprintf('Layout "%s" not found.', $layout));
         }
 
         extract($data, EXTR_SKIP);
 
         ob_start();
-        require $templatePath;
+        require $viewFile;
         $content = (string) ob_get_clean();
 
-        if ($layout === '') {
-            echo $content;
-
-            return;
-        }
-
-        $layoutPath = App::basePath('views/' . $layout . '.php');
-
-        if (!is_file($layoutPath)) {
-            throw new RuntimeException(sprintf('Layout %s não encontrado.', $layout));
-        }
-
-        require $layoutPath;
+        require $layoutFile;
     }
 }

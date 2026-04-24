@@ -4,78 +4,79 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use ReflectionMethod;
-use Throwable;
-
 final class Router
 {
     private array $routes = [];
 
-    public function get(string $path, callable|array $handler): void
+    public function get(string $path, callable|array $handler, array $middleware = []): void
     {
-        $this->addRoute('GET', $path, $handler);
+        $this->add('GET', $path, $handler, $middleware);
     }
 
-    public function post(string $path, callable|array $handler): void
+    public function post(string $path, callable|array $handler, array $middleware = []): void
     {
-        $this->addRoute('POST', $path, $handler);
+        $this->add('POST', $path, $handler, $middleware);
     }
 
-    public function dispatch(Request $request): void
+    public function add(string $method, string $path, callable|array $handler, array $middleware = []): void
     {
-        $method = $request->method();
-        $uri = rtrim($request->uri(), '/') ?: '/';
+        $normalizedPath = $this->normalizePath($path);
+        $this->routes[strtoupper($method)][$normalizedPath] = [
+            'handler' => $handler,
+            'middleware' => $middleware,
+        ];
+    }
 
-        foreach ($this->routes[$method] ?? [] as $route) {
-            $pattern = preg_replace('#\{([a-zA-Z_][a-zA-Z0-9_]*)\}#', '(?P<$1>[^/]+)', $route['path']);
-            $regex = '#^' . rtrim((string) $pattern, '/') . '$#';
+    public function dispatch(string $method, string $uri): void
+    {
+        $httpMethod = strtoupper($method);
+        $path = $this->normalizePath(parse_url($uri, PHP_URL_PATH) ?: '/');
+        $route = $this->routes[$httpMethod][$path] ?? null;
 
-            if (!preg_match($regex, $uri, $matches)) {
-                continue;
-            }
-
-            $params = array_filter($matches, static fn (string|int $key): bool => is_string($key), ARRAY_FILTER_USE_KEY);
-            $boundRequest = Request::capture($params);
-
-            try {
-                $handler = $route['handler'];
-
-                if (is_array($handler)) {
-                    [$class, $action] = $handler;
-                    $controller = new $class();
-                    $reflection = new ReflectionMethod($controller, $action);
-
-                    if ($reflection->getNumberOfParameters() === 0) {
-                        $controller->{$action}();
-                    } else {
-                        $controller->{$action}($boundRequest);
-                    }
-
-                    return;
-                }
-
-                $handler($boundRequest);
-
-                return;
-            } catch (Throwable $throwable) {
-                http_response_code(500);
-                View::render('partials/error', ['exception' => $throwable], 'layouts/guest');
-
-                return;
-            }
+        if ($route === null) {
+            http_response_code(404);
+            echo 'Página não encontrada.';
+            return;
         }
 
-        http_response_code(404);
-        View::render('partials/not-found', [], 'layouts/guest');
+        $this->runMiddleware($route['middleware']);
+        $this->invokeHandler($route['handler']);
     }
 
-    private function addRoute(string $method, string $path, callable|array $handler): void
+    private function runMiddleware(array $middleware): void
     {
-        $normalizedPath = rtrim($path, '/') ?: '/';
+        foreach ($middleware as $entry) {
+            if ($entry === 'auth' && !Session::has('user')) {
+                Session::flash('error', 'Faça login para acessar o painel.');
+                redirect('/login');
+            }
 
-        $this->routes[$method][] = [
-            'path' => $normalizedPath,
-            'handler' => $handler,
-        ];
+            if ($entry === 'guest' && Session::has('user')) {
+                redirect('/admin');
+            }
+        }
+    }
+
+    private function invokeHandler(callable|array $handler): void
+    {
+        if (is_callable($handler)) {
+            $handler();
+            return;
+        }
+
+        [$controllerClass, $method] = $handler;
+        $controller = new $controllerClass();
+        $controller->{$method}();
+    }
+
+    private function normalizePath(string $path): string
+    {
+        if ($path === '') {
+            return '/';
+        }
+
+        $normalized = '/' . trim($path, '/');
+
+        return $normalized === '//' ? '/' : $normalized;
     }
 }

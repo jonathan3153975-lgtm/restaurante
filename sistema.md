@@ -1,5 +1,5 @@
 # 🍽️ Sistema Completo de Gestão para Restaurante (SaaS)
-
+Nome: Tech-Food
 ## 📌 Visão Geral
 Sistema completo para gestão de restaurantes em modelo **SaaS multi-tenant**, contemplando administração, contabilidade, estoque, cardápio digital com pedidos via QR-Code, pagamento da conta pelo acesso do cliente com confirmação no caixa, controle de mesas, caixa, funcionários e integração fiscal e de pagamentos.
 
@@ -14,7 +14,7 @@ O objetivo é fornecer uma solução **robusta, escalável, segura e moderna**, 
 - **Frontend:** HTML5, CSS3, JavaScript
 - **Bibliotecas:**
   - jQuery
-  - Bootstrap (UI responsiva)
+  - Bootstrap (UI responsiva, estilo customizado)
   - SweetAlert (alertas e confirmações)
   - Quill (editor de textos ricos)
 - **Arquitetura:** MVC + SaaS Multi-Tenant
@@ -54,199 +54,86 @@ O objetivo é fornecer uma solução **robusta, escalável, segura e moderna**, 
 - Recuperação de senha
 
 ---
+## Layout
+Crie um tema customizado baseado em Bootstrap 5 com foco em um design moderno, elegante e minimalista utilizando uma paleta de cores escura com detalhes dourados.
 
-## 🧾 Módulo Administrativo
-O menu lateral com submenus, na seguinte estrutura:
-  Menu Administrativo;
-  Submenu:
-    - Cadastro de fornecedores;
-    - NF entrada (Lançamento manual e importação xml);
+Requisitos gerais do layout:
 
-      -> Esse módulo deve ter: 
-        1 - Painel com campo de busca dinâmico (digitar e filtrar), além de filtros por mês e ano e listar as notas registradas (inclua paginação nos registros) Com opção para visualizar (em modal ou modo documento em outra aba para impressão), editar e excluir.
+* Fundo principal preto (#000000)
+* Textos principais em branco (#FFFFFF)
+* Elementos de destaque (bordas, botões, links, detalhes) em dourado (#D4AF37 e variações mais claras como #F5D76E)
+* Tons de cinza escuro para componentes secundários (#1E1E1E, #2A2A2A, #3A3A3A)
 
-        2 - No cadastro com campos específicos para o fim, incluíndo impostos. O ideal é que caso seja nota fiscal de produtos referentes ao estoque, já inclua o saldo no estoque automaticamente. Inclua as máscaras referentes aos campos, como cnpj, por exemplo. Para buscar o fornecedor, utilize um campo digitável que retorne o registro do fornecedor. Nos campos referentes a valores, utilize uma formatação que insira a vírgula duas casas após, automaticamente.
+Estrutura técnica:
 
-        3 - O formulário de cadastro também deve ter um atalho para cadastrar fornecedor, de maneira rápida, para que o usuário não saia da tela de lançamento de notas.
-        
-        4 - 
+* Utilize variáveis CSS (:root) para definir toda a paleta de cores
+* Sobrescreva as variáveis padrão do Bootstrap sempre que possível
+* Crie um arquivo CSS organizado e reutilizável
+* Evite uso excessivo de !important (usar apenas quando necessário)
 
-    - Estoque;
-  Menu RH;
-  Submenu:
-    - Funcionários;
-    - Holerites;
+Customizações obrigatórias:
 
-### 📥 Notas Fiscais de Entrada
-- Lançamento manual e importação XML
-- Fornecedor
-- Produtos vinculados ao estoque
-- Impostos (ICMS, IPI, PIS, COFINS)
-- Centros de custo
+1. Body:
 
-### 📦 Controle de Estoque
-- Cadastro de produtos/matérias-primas
-- Unidades de medida
-- Estoque mínimo
-- Entrada automática via NF
-- Saída automática por venda
-- Ajustes manuais
+* Fundo preto
+* Texto branco
 
-### 📤 Saída de Materiais
-- Consumo interno
-- Perdas e desperdícios
-- Registro com responsável
+2. Cards, Navbar e Dropdowns:
 
----
+* Fundo cinza escuro (#1E1E1E)
+* Bordas douradas finas
+* Aparência sofisticada e limpa
 
-## 👨‍🍳 Funcionários e RH
+3. Botões:
 
-- Cadastro de funcionários
-- Cargos e salários
-- Controle de jornada
-- Benefícios
-- Descontos
-- Histórico salarial
-- Relatórios de folha
+* Botão primário com fundo dourado e texto preto
+* Hover com dourado mais claro
+* Versão outline com borda dourada e hover preenchido
+* Bordas levemente arredondadas
 
----
+4. Inputs e Selects:
 
-## 💰 Financeiro e Caixa
+* Fundo cinza escuro (#2A2A2A)
+* Texto branco
+* Borda dourada
+* Placeholder em cinza claro
+* Estado focus com glow dourado suave (box-shadow)
 
-### 🧾 Controle de Caixa
-- Abertura e fechamento
-- Entradas e saídas
-- Sangria e reforço
-- Caixa por usuário
+5. Modais:
 
-### 📊 Movimentações Financeiras
-- Contas a pagar
-- Contas a receber
-- Categorias financeiras
-- Fluxo de caixa
-- Relatórios por período
+* Fundo cinza escuro (#1E1E1E)
+* Texto branco
+* Bordas douradas
+* Header e footer com separadores discretos dourados
 
----
+6. Tabelas:
 
-## 🍔 Cardápio e Produtos
+* Texto branco
+* Cabeçalho com fundo cinza médio
+* Linhas com separadores dourados
+* Hover com leve destaque em cinza
 
-### 📂 Categorias
-- Criar, editar e excluir
-- Ordenação
-- Ativação/Inativação
+7. Links:
 
-### 🍽️ Itens do Cardápio
-- Nome, descrição e imagem
-- Preço
-- Variações (tamanho, adicional)
-- Vinculação com estoque
-- Disponibilidade
+* Cor dourada padrão
+* Hover com dourado mais claro
 
----
+8. Navbar:
 
-## 🪑 Mesas e Pedidos (Cardápio Digital)
+* Fundo preto ou cinza muito escuro
+* Links em branco
+* Hover dourado
 
-### 📱 Cardápio Digital via QR-Code
-- QR-Code único por mesa
-- Acesso sem login
-- Interface mobile first
-- Atualização em tempo real
+Extras desejáveis:
 
-### 🛒 Pedido do Cliente
-- Seleção de itens
-- Observações
-- Confirmação do pedido
-- Integração imediata com cozinha
+* Transições suaves (0.2s a 0.3s)
+* Aparência premium (estilo “luxo”)
+* Código limpo, bem organizado e comentado
+* Compatível com Bootstrap 5 sem quebrar componentes nativos
 
-### 💳 Pagamento pelo Smartphone
-- Pix
-- Cartão de crédito
-- Cartão de débito
-- Confirmação automática
+Saída esperada:
 
----
+* Um arquivo CSS completo
+* Opcional: exemplo de HTML demonstrando os componentes estilizados (botões, inputs, modal, tabela e navbar)
 
-## 🍳 Painel da Cozinha
-
-- Recebimento de pedidos em tempo real
-- Status:
-  - Pendente
-  - Em preparo
-  - Concluído
-- Alertas sonoros e visuais
-
----
-
-## 🧾 Integração Fiscal (SEFAZ)
-
-- Emissão automática de NFC-e / NF-e
-- Integração via API certificada
-- Certificado digital A1
-- Contingência
-- Cancelamento e inutilização
-- Download de XML e DANFE
-
----
-
-## 🔗 Integrações Externas
-
-- SEFAZ (NF-e / NFC-e)
-- Mercado Pago (Pix, Crédito e Débito)
-- Webhooks para pagamentos
-
----
-
-## 🎨 UI/UX
-
-- Design moderno e profissional
-- Linhas retas e minimalistas
-- Layout responsivo
-- Feedback imediato de ações
-- Alta performance
-
----
-
-## 📡 Tempo Real
-
-- Comunicação instantânea:
-  - Pedido → Cozinha
-  - Pedido → Caixa
-- Uso de:
-  - WebSockets ou Long Polling
-
----
-
-## 📊 Relatórios
-
-- Vendas
-- Produtos mais vendidos
-- Estoque
-- Financeiro
-- Funcionários
-- Filtros por período
-- Exportação PDF/Excel
-
----
-
-## ⚙️ Requisitos Não Funcionais
-
-- Escalabilidade
-- Alta disponibilidade
-- Backup automático
-- Logs e auditoria
-- LGPD
-
----
-
-## 🚀 Entregáveis
-
-- Código-fonte organizado
-- Banco de dados versionado
-- Documentação técnica
-- Manual do usuário
-
----
-
-## ✅ Considerações Finais
-
-Este sistema deve ser **modular**, preparado para futuras expansões, como aplicativos mobile, integrações adicionais e BI avançado, mantendo sempre boas práticas de desenvolvimento e segurança.
+Crie o ambiente inicial, com tela de login, simulando um usuário do banco de dados (inexistente ainda) e acessando o sistema, com menu simulado para validarmos o estilo

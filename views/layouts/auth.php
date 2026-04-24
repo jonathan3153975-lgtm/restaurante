@@ -10,7 +10,7 @@ $errorFlash = Session::consume('error');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= e(config('name')) ?> | Painel</title>
+    <title><?= e(config('name')) ?> | Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
@@ -19,16 +19,8 @@ $errorFlash = Session::consume('error');
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="<?= e(asset('css/theme.css')) ?>" rel="stylesheet">
 </head>
-<body>
-    <div class="app-shell">
-        <?php require BASE_PATH . '/views/partials/sidebar.php'; ?>
-        <div class="app-content">
-            <?php require BASE_PATH . '/views/partials/topbar.php'; ?>
-            <main class="page-content">
-                <?= $content ?>
-            </main>
-        </div>
-    </div>
+<body class="auth-page">
+    <?= $content ?>
 
     <script>
         window.TECH_FOOD_FLASH = <?= json_encode(['success' => $successFlash, 'error' => $errorFlash], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;

@@ -2,17 +2,27 @@
 
 declare(strict_types=1);
 
-$publicPath = __DIR__ . '/public';
-$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-$requestedFile = realpath($publicPath . $requestPath);
+$uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+$publicFile = __DIR__ . '/public' . $uri;
 
-if (
-    $requestPath !== '/'
-    && $requestedFile !== false
-    && str_starts_with($requestedFile, $publicPath)
-    && is_file($requestedFile)
-) {
-    return false;
+if ($uri !== '/' && is_file($publicFile)) {
+    $extension = strtolower(pathinfo($publicFile, PATHINFO_EXTENSION));
+    $mimeTypes = [
+        'css' => 'text/css; charset=UTF-8',
+        'js' => 'application/javascript; charset=UTF-8',
+        'png' => 'image/png',
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'svg' => 'image/svg+xml',
+        'webp' => 'image/webp',
+    ];
+
+    if (isset($mimeTypes[$extension])) {
+        header('Content-Type: ' . $mimeTypes[$extension]);
+    }
+
+    readfile($publicFile);
+    return true;
 }
 
-require $publicPath . '/index.php';
+require __DIR__ . '/public/index.php';
